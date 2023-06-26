@@ -17,7 +17,7 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.example.api"))
+                .apis(RequestHandlerSelectors.basePackage("com.simpleSavings.Simple_Saving_API.controller"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo());
@@ -25,10 +25,11 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Your API Documentation")
-                .description("Description of your API")
+                .title("Simple Savings API")
+                .description("API documentation for a simple savings system")
                 .version("1.0.0")
                 .build();
     }
 }
+
 

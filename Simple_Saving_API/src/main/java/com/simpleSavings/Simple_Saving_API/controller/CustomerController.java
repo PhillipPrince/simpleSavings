@@ -1,5 +1,4 @@
 package com.simpleSavings.Simple_Saving_API.controller;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -19,10 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.simpleSavings.Simple_Saving_API.model.Customer;
 import com.simpleSavings.Simple_Saving_API.model.Transaction;
 import com.simpleSavings.Simple_Saving_API.services.CustomerService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/customers")
+@Api(tags = "Customers")
 public class CustomerController {
-	@Autowired
+    @Autowired
     private final CustomerService customerService;
     
     public CustomerController(CustomerService customerService) {
@@ -30,19 +34,19 @@ public class CustomerController {
     }
     
     @PostMapping("/createCustomer")
+    @ApiOperation(value = "Create a new customer with their bio data")
     public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
         Customer createdCustomer = customerService.createCustomer(customer);
-        if(createdCustomer==null) {
-        	return ResponseEntity.badRequest().build();
+        if (createdCustomer == null) {
+            return ResponseEntity.badRequest().build();
         }
         return new ResponseEntity<>(createdCustomer, HttpStatus.CREATED);
     }
     
-   
-    
     @GetMapping("/getcustomer/{customerId}")
+    @ApiOperation(value = "Get a customer by their ID")
     public ResponseEntity<Customer> getCustomerById(@PathVariable Long customerId) {
-        Customer customer = (customerService).getCustomerById(customerId);
+        Customer customer = customerService.getCustomerById(customerId);
         if (customer != null) {
             return ResponseEntity.ok(customer);
         } else {
@@ -51,16 +55,17 @@ public class CustomerController {
     }
     
     @PatchMapping("/update/{customerId}")
+    @ApiOperation(value = "Update a customer by their ID")
     public ResponseEntity<Customer> updateCustomer(@PathVariable Long customerId, @RequestBody Customer customer) {
         Customer updatedCustomer = customerService.updateCustomer(customerId, customer);
         if (updatedCustomer == null) {
-        	
             return ResponseEntity.notFound().build();
         }
         return new ResponseEntity<>(updatedCustomer, HttpStatus.CREATED);
     }
     
     @DeleteMapping("/delete/{customerId}")
+    @ApiOperation(value = "Delete a customer by their ID")
     public ResponseEntity<Void> deleteCustomer(@PathVariable Long customerId) {
         boolean deleted = customerService.deleteCustomer(customerId);
         if (deleted) {
@@ -71,20 +76,19 @@ public class CustomerController {
     }
     
     @GetMapping("/{customerId}/transactions")
+    @ApiOperation(value = "Get transactions for a customer by their ID")
     public ResponseEntity<Optional<Customer>> getCustomerTransactions(@PathVariable Long customerId) {
         Optional<Customer> transactions = customerService.getCustomerTransactions(customerId);
         return ResponseEntity.ok(transactions);
     }
     
     @GetMapping("/getAllCustomers")
+    @ApiOperation(value = "Get all customers")
     public ResponseEntity<List<Customer>> getCustomerAll() {
         List<Customer> customers = customerService.getAllCustomers();
-        if (customers == null || customers.size() == 0) {         
+        if (customers == null || customers.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(customers);
     }
-    
-    
-    
 }

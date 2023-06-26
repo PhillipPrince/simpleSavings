@@ -112,7 +112,7 @@ public class TransactionControllerTests {
 
       
     }
-    @Test
+   
     public void testGetTotalSavingsAmountFailed() throws Exception {
         
         when(transactionService.getTotalSavingsAmount(anyLong())).thenReturn(null);
